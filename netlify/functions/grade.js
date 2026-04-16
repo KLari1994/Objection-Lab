@@ -3,7 +3,7 @@ export default async (req) => {
     return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405 });
   }
 
-  const apiKey = "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";
+  const apiKey = "";
 
   try {
     const body = await req.json();
