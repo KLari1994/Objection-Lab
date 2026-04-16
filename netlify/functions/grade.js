@@ -1,17 +1,9 @@
 export default async (req) => {
   if (req.method !== "POST") {
-    const hasKey = !!(process.env.ANTHROPIC_API_KEY);
-    return new Response(
-      JSON.stringify({ 
-        status: "function running", 
-        has_key_process: hasKey,
-        env_keys: Object.keys(process.env).filter(k => k.includes("ANTHRO"))
-      }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405 });
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = "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";
 
   try {
     const body = await req.json();
@@ -32,15 +24,8 @@ export default async (req) => {
 
     const data = await response.json();
 
-    if (!response.ok) {
-      return new Response(
-        JSON.stringify({ api_status: response.status, api_error: data }),
-        { status: response.status, headers: { "Content-Type": "application/json" } }
-      );
-    }
-
     return new Response(JSON.stringify(data), {
-      status: 200,
+      status: response.status,
       headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
